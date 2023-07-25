@@ -35,8 +35,8 @@ public class TestCases {
         driver.quit();
 
     }
-
     
+    // INTV-1/Session-7/3/Automate_Alert_Prompt
     public  void TC_AutomateAlertPrompt() throws InterruptedException{
         System.out.println("Start Test case: TC_AutomateAlertPrompt");
         String strAlert = "Jyoti";
@@ -67,5 +67,42 @@ public class TestCases {
         System.out.println("end Test case: TC_AutomateAlertPrompt");
     }
 
+    // INTV-1/Session-7/2/Activity 7: Automate_nested_frames_text
+    public  void TC_AutomateNestedFramesText() throws InterruptedException{
+        System.out.println("Start Test case: TC_AutomateNestedFramesText");
+        // Load the URL  "https://the-internet.herokuapp.com/nested_frames"
+        driver.get("https://the-internet.herokuapp.com/nested_frames");
+        // Switch to top frame
+        driver.switchTo().frame("frame-top");
+        // switch to left frame By Name "frame-left"
+        //get the Text & print it
+        driver.switchTo().frame("frame-left");
+        String eleLeftText = driver.findElement(By.xpath("//body")).getText();
+        System.out.println("Left Frame Text : " + eleLeftText);
+        // Switch back to parent frame
+        driver.switchTo().parentFrame();
+        // Switch to Middle frame by name "frame-middle"
+        //get the Text & print it
+        driver.switchTo().frame("frame-middle");
+        String eleMiddleText = driver.findElement(By.xpath("//body")).getText();
+        System.out.println("Middle Frame Text : " + eleMiddleText);
+        // Switch back to parent frame
+        driver.switchTo().parentFrame();
+        // Switch to Middle frame by name "frame-right"
+        //get the Text & print it
+        driver.switchTo().frame("frame-right");
+        String eleRightText = driver.findElement(By.xpath("//body")).getText();
+        System.out.println("Right Frame Text : " + eleRightText);
+        // Switch to main page/ DOM
+        driver.switchTo().defaultContent();
+        // Switch to bottom frame by Name "frame-bottom"
+        //get the Text & print it
+        driver.switchTo().frame("frame-bottom");
+        String eleBottomText = driver.findElement(By.xpath("//body")).getText();
+        System.out.println("Bottom Frame Text : " + eleBottomText);
+        // Switch to main page/ DOM
+        driver.switchTo().defaultContent();
+        System.out.println("end Test case: TC_AutomateNestedFramesText");
+    }
 
 }

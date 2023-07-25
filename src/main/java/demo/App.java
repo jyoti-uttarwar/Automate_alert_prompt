@@ -9,9 +9,11 @@ public class App {
     public void getGreeting() throws InterruptedException, MalformedURLException {
         TestCases tests = new TestCases(); // Initialize your test class
 
-        //TODO: call your test case functions one after other here
+        // INTV-1/Session-7/2/Activity 7: Automate_nested_frames_text
+        tests.TC_AutomateNestedFramesText();
 
-        tests.TC_AutomateAlertPrompt();
+        // // INTV-1/Session-7/3/Automate_Alert_Prompt
+        // tests.TC_AutomateAlertPrompt();
 
         //END Tests
 
