@@ -1,9 +1,19 @@
 package demo;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -103,6 +113,58 @@ public class TestCases {
         // Switch to main page/ DOM
         driver.switchTo().defaultContent();
         System.out.println("end Test case: TC_AutomateNestedFramesText");
+    }
+
+    // INTV-1/Session-7/5/Activity 10: Automate_window_handle
+    public  void TC_AutomateWindowHandle() throws InterruptedException, IOException{
+        System.out.println("Start Test case: TC_AutomateWindowHandle");
+        // Load the URL "https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_win_open"
+        driver.get("https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_win_open");
+        // Switch to frame Using Locator "ID" "iframeResult"
+        driver.switchTo().frame("iframeResult");
+        // Locate & click "Try It" button Using Locator "XPath" "//button[contains(text(),'Try')]"
+        WebElement eleTryButton = driver.findElement(By.xpath("//button[contains(text(),'Try')]"));
+        eleTryButton.click();
+        //Get handles of the windows
+        String mainWindow = driver.getWindowHandle();
+        Set<String> allWindows = driver.getWindowHandles();
+        for(String currentWindow : allWindows)
+        {
+           if(!mainWindow.equalsIgnoreCase(currentWindow))
+           {
+                //Switch to child window
+                driver.switchTo().window(currentWindow);  
+                // print the URL of new window              
+                System.out.println("Newly opened window URL : "+ driver.getCurrentUrl());
+                //Print the Title of the new window
+                System.out.println("Newly opened window Title : "+ driver.getTitle());
+                
+                //Take screenshot
+                TakesScreenshot srcshot = ((TakesScreenshot)driver);
+                File srcFile = srcshot.getScreenshotAs(OutputType.FILE);
+
+                //If directory is not present, create a directory to save the screenshot
+                String dirPath = System.getProperty("user.dir") + "\\ScreenShot\\";
+                File file = new File(dirPath);
+                if(!file.exists())
+                    file.mkdirs();
+
+                //Generate unique Filename using timestamp to save screenshot 
+                String timestamp = new SimpleDateFormat("yyyyMMdd__hh_mm_ss").format(new Date());
+                String fileName = "ScreenShot_" + timestamp + ".png"; 
+                
+                //Generate a file to save screenshot at defined directory
+                File destFile = new File(dirPath + fileName);
+
+                //Copy the screenshot from source file to destination file
+                FileUtils.copyFile(srcFile,destFile);
+                //Close the newly opened window
+                driver.close();
+                //Switch to main window
+                driver.switchTo().window(mainWindow);
+            }
+        }        
+        System.out.println("end Test case: TC_AutomateWindowHandle");
     }
 
 }
